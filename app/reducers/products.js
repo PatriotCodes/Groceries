@@ -1,5 +1,11 @@
-import { ADD_NEW_PRODUCT, RECEIVE_PRODUCTS, REMOVE_PRODUCT } from '../constants/ActionTypes';
+import * as types from '../constants/ActionTypes';
 import createReducer from "../lib/createReducer";
 
-export const allProducts = createReducer({},
-    {});
+let initialState = { products: [], loading: true };
+
+export const allProducts = createReducer({},{
+    [types.RECEIVE_PRODUCTS](state = initialState, action) {
+        state = Object.assign({}, state, { products: action.products, loading: false });
+        return state;
+    }
+});
