@@ -1,8 +1,7 @@
-import * as types from '../constants/ActionTypes';
+import { ADD_TO_CART } from "../constants/ActionTypes";
 
-export const addToCart = productId => {
-    return {
-        type: types.ADD_TO_CART,
-        productId
-    }
-};
+export function addToCart(productID) {
+    return (dispatch) => {
+        dispatch({type: ADD_TO_CART, productId: productID});
+    };
+}

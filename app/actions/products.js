@@ -1,19 +1,10 @@
-import * as types from '../constants/ActionTypes';
-import products from '../api/products';
-import {RECEIVE_PRODUCTS} from "../constants/ActionTypes";
-
-export function receiveProducts({products}) {
-    return {
-        type: types.RECEIVE_PRODUCTS,
-        products
-    }
-}
+import { RECEIVE_PRODUCTS } from '../constants/ActionTypes';
+import productsData from '../api/products.json';
 
 export function getAllProducts() {
     return (dispatch) => {
         setTimeout(() => {
-            dispatch({type: RECEIVE_PRODUCTS, products: products});
+            dispatch({type: RECEIVE_PRODUCTS, products: JSON.stringify(productsData.products)});
         }, 1000);
-
     };
 }

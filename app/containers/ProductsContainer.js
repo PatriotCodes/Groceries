@@ -4,13 +4,17 @@ import {
     Text,
     View,
     ActivityIndicator,
-    StyleSheet
+    StyleSheet,
+    Modal,
+    StatusBar,
+    Platform,
 } from 'react-native';
 
 class ProductsContainer extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {};
     }
 
     componentDidMount() {
@@ -38,7 +42,11 @@ class ProductsContainer extends Component {
                 </View>
             );
         } else {
-            return <Text>Products loaded! {this.props.products}</Text>
+            return (
+                <View style={{ flex: 1, marginTop: Platform.OS === 'ios' ? 20 : StatusBar.currentHeight }}>
+                    <Text>Products loaded! {this.props.products}</Text>
+                </View>
+            )
         }
     }
 
@@ -50,18 +58,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
         backgroundColor: '#e5e5e5',
-    },
-    newsItem: {
-        alignSelf: 'stretch',
-        backgroundColor: '#FFFFFF',
-        padding: 10,
-        marginBottom: 5,
-        flexDirection: 'row',
-    },
-    newsTitle: {
-        fontSize: 14,
-        color: '#000000',
-        marginTop: 6,
     },
     modalBackground: {
         flex: 1,
@@ -79,18 +75,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-around'
     },
-    checkBox: {
-        marginLeft: 'auto'
-    },
-    newsHighlight: {
-        alignSelf: 'stretch'
-    }
 });
 
 function mapStateToProps(state) {
     return {
-        products: state.products,
-        loading:  state.loading
+        products: state.productsReducer.products,
+        loading:  state.productsReducer.loading
     }
 }
 
