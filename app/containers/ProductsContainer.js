@@ -9,6 +9,7 @@ import {
     StatusBar,
     Platform,
 } from 'react-native';
+import Product from '../components/Product';
 
 class ProductsContainer extends Component {
 
@@ -44,7 +45,11 @@ class ProductsContainer extends Component {
         } else {
             return (
                 <View style={{ flex: 1, marginTop: Platform.OS === 'ios' ? 20 : StatusBar.currentHeight }}>
-                    <Text>Products loaded! {this.props.products}</Text>
+                    {this.props.products.map((prop) => {
+                        return (
+                            <Product key={prop.id} title={prop.title} />
+                        );
+                    })}
                 </View>
             )
         }
