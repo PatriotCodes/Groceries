@@ -6,20 +6,12 @@ class LoadingIndicator extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Modal
-                    transparent={true}
-                    animationType={'none'}
-                    visible={true}
-                    onRequestClose={() => {
-                        console.log('close modal')
-                    }}>
-                    <View style={styles.modalBackground}>
-                        <View style={styles.activityIndicatorWrapper}>
-                            <ActivityIndicator
-                                animating={true}/>
-                        </View>
+                <View style={styles.modalBackground}>
+                    <View style={styles.activityIndicatorWrapper}>
+                        <ActivityIndicator
+                            animating={true}/>
                     </View>
-                </Modal>
+                </View>
             </View>
         );
     }

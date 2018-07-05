@@ -3,12 +3,13 @@ import {connect} from 'react-redux';
 import {
     View,
     StyleSheet,
-    StatusBar,
-    Platform,
     FlatList,
 } from 'react-native';
 import Product from '../components/Product';
 import LoadingIndicator from '../components/LoadingIndicator';
+import {bindActionCreators} from 'redux';
+import {ActionCreators} from "../actions";
+
 
 class ProductsContainer extends Component {
 
@@ -18,21 +19,27 @@ class ProductsContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.getAllProducts()
+        this.props.getAllProducts();
     }
 
     render() {
         return (
-            <View style={styles.container}>
+            <View style={{flex: 1}}>
                 {this.props.loading && <LoadingIndicator/>}
-                {!this.props.loading && <FlatList
-                    data={this.props.products}
-                    renderItem={({item}) => (
-                        <Product title={item.title}/>
-                    )}
-                    keyExtractor={item => item.id.toString()}
-                    ItemSeparatorComponent={() => <View style={styles.itemSeparator}/>}
-                />}
+                {!this.props.loading &&
+                <View style={{flex: 1}}>
+                    <View style={{flex: .9}}>
+                        <FlatList
+                            data={this.props.products}
+                            renderItem={({item}) => (
+                                <Product title={item.title}/>
+                            )}
+                            keyExtractor={item => item.id.toString()}
+                            ItemSeparatorComponent={() => <View style={styles.itemSeparator}/>}
+                        />
+                    </View>
+                    <View style={styles.footer}/>
+                </View>}
             </View>
         )
     }
@@ -40,13 +47,14 @@ class ProductsContainer extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginTop: Platform.OS === 'ios' ? 20 : StatusBar.currentHeight,
-    },
     itemSeparator: {
         height: 1,
         width: "100%",
+        backgroundColor: "#d5d5d6",
+    },
+    footer: {
+        flex: .1,
+        // TODO: change
         backgroundColor: "#d5d5d6",
     },
 });
@@ -58,4 +66,8 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(ProductsContainer);
+function mapDispatchToProps(dispatch){
+    return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductsContainer);
