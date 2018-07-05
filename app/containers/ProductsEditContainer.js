@@ -5,7 +5,7 @@ import {
     StyleSheet,
     FlatList,
 } from 'react-native';
-import Product from '../components/Product';
+import ProductEdit from '../components/ProductEdit';
 import {bindActionCreators} from 'redux';
 import {ActionCreators} from "../actions";
 
@@ -23,7 +23,7 @@ class ProductsEditContainer extends Component {
                     <FlatList
                         data={this.props.products}
                         renderItem={({item}) => (
-                            <Product title={item.title}/>
+                            <ProductEdit title={item.title} id={item.id}/>
                         )}
                         keyExtractor={item => item.id.toString()}
                         ItemSeparatorComponent={() => <View style={styles.itemSeparator}/>}
@@ -31,6 +31,10 @@ class ProductsEditContainer extends Component {
                 </View>
             </View>
         )
+    }
+
+    static newProductModal() {
+        alert("ENTER EDITOR!");
     }
 
 }
