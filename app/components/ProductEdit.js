@@ -7,10 +7,13 @@ class ProductContainer extends Component {
     render() {
         return (
             <View style={styles.editItemView}>
-                <TouchableHighlight key={this.props.id}
-                                    underlayColor='black' onPress={() => this.onPress(this.props.id)}>
-                    <View style={styles.removeBtn}/>
-                </TouchableHighlight>
+                <View style={styles.removeBtnWrapper}>
+                    <TouchableHighlight key={this.props.id}
+                                        underlayColor='#690000' onPress={() => this.onPress(this.props.id)}
+                                        style={styles.removeBtn}>
+                            <Text style={{textAlign: "center", color: "white"}}>-</Text>
+                    </TouchableHighlight>
+                </View>
                 <View style={styles.productTextViewStyle}>
                     <Text style={globalStyles.primaryText}>{this.props.title}</Text>
                 </View>
@@ -28,17 +31,24 @@ const styles = StyleSheet.create({
     productTextViewStyle: {
         paddingTop: 14,
         paddingBottom: 14,
-        paddingLeft: 28,
-        paddingRight: 28,
         flex: .9,
     },
+    removeBtnWrapper: {
+        flex: .2,
+        alignItems: "center",
+        justifyContent: "center",
+    },
     removeBtn: {
-        flex: .1,
-        backgroundColor: "#990000"
+        flex: 1,
+        position: 'absolute',
+        backgroundColor: "#990000",
+        height: 20,
+        width: 20,
+        borderRadius: 10,
     },
     editItemView: {
-      flex: 1,
-      flexDirection: "row",
+        flex: 1,
+        flexDirection: "row",
     }
 });
 

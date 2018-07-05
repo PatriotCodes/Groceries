@@ -8,8 +8,8 @@ class AppContainer extends Component {
 
     render() {
         return (
-            <Router titleStyle={styles.navText}>
-                <Scene key="root" titleStyle={{ textAlign: 'center', flex: 1 }}>
+            <Router titleStyle={styles.navText} navigationBarStyle={styles.navBar}>
+                <Scene key="root" titleStyle={styles.headerText}>
                     <Scene key="products" component={ProductsContainer}
                            title="Groceries"
                            backTitle=""
@@ -44,7 +44,7 @@ class AppContainer extends Component {
 
     addNewButton() {
         return(
-            <TouchableHighlight onPress={() => ProductsEditContainer.newProductModal()}>
+            <TouchableHighlight onPress={() => Actions.refresh({hideNavBar: true})}>
                 <Text style={styles.navText}>+</Text>
             </TouchableHighlight>
         )
@@ -53,12 +53,23 @@ class AppContainer extends Component {
 }
 
 styles = StyleSheet.create({
+    headerText: {
+        fontFamily: "Roboto",
+        fontSize: 14,
+        textAlign: 'center',
+        flex: 1
+    },
     navText: {
         fontFamily: "Roboto",
-        fontSize: 18,
+        fontSize: 14,
         fontWeight: "bold",
         paddingRight: 10,
         paddingLeft: 10,
+    },
+    navBar: {
+        paddingTop: 0,
+        height: 44,
+        backgroundColor: "#d5d5d6",
     }
 });
 
