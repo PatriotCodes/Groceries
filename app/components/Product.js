@@ -5,7 +5,7 @@ class ProductContainer extends Component {
 
     render() {
         return (
-            <View style={styles.productViewStyle}>
+            <View>
                 <Text style={styles.productTextStyle}>{this.props.title}</Text>
             </View>
         );
@@ -14,10 +14,6 @@ class ProductContainer extends Component {
 }
 
 const styles = StyleSheet.create({
-    productViewStyle: {
-        borderWidth: 1,
-        borderColor: '#d5d5d6',
-    },
     productTextStyle: {
         fontFamily: 'Roboto',
         fontSize: 20,

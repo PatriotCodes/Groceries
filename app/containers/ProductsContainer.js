@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {
-    Text,
     View,
-    ActivityIndicator,
     StyleSheet,
-    Modal,
     StatusBar,
     Platform,
+    FlatList,
 } from 'react-native';
 import Product from '../components/Product';
+import LoadingIndicator from '../components/LoadingIndicator';
 
 class ProductsContainer extends Component {
 
@@ -25,31 +24,19 @@ class ProductsContainer extends Component {
     render() {
         if (this.props.loading) {
             return (
-                <View style={styles.container}>
-                    <Modal
-                        transparent={true}
-                        animationType={'none'}
-                        visible={this.state.loading}
-                        onRequestClose={() => {
-                            console.log('close modal')
-                        }}>
-                        <View style={styles.modalBackground}>
-                            <View style={styles.activityIndicatorWrapper}>
-                                <ActivityIndicator
-                                    animating={true}/>
-                            </View>
-                        </View>
-                    </Modal>
-                </View>
+                <LoadingIndicator/>
             );
         } else {
             return (
-                <View style={{ flex: 1, marginTop: Platform.OS === 'ios' ? 20 : StatusBar.currentHeight }}>
-                    {this.props.products.map((prop) => {
-                        return (
-                            <Product key={prop.id} title={prop.title} />
-                        );
-                    })}
+                <View style={styles.container}>
+                    <FlatList
+                        data={this.props.products}
+                        renderItem={({item}) => (
+                            <Product title={item.title}/>
+                        )}
+                        keyExtractor={item => item.id.toString()}
+                        ItemSeparatorComponent={() => <View style={styles.itemSeparator}/>}
+                    />
                 </View>
             )
         }
@@ -60,32 +47,19 @@ class ProductsContainer extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        backgroundColor: '#e5e5e5',
+        marginTop: Platform.OS === 'ios' ? 20 : StatusBar.currentHeight,
     },
-    modalBackground: {
-        flex: 1,
-        alignItems: 'center',
-        flexDirection: 'column',
-        justifyContent: 'space-around',
-        backgroundColor: '#00000040'
-    },
-    activityIndicatorWrapper: {
-        backgroundColor: '#FFFFFF',
-        height: 100,
-        width: 100,
-        borderRadius: 10,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-around'
+    itemSeparator: {
+        height: 1,
+        width: "100%",
+        backgroundColor: "#d5d5d6",
     },
 });
 
 function mapStateToProps(state) {
     return {
         products: state.productsReducer.products,
-        loading:  state.productsReducer.loading
+        loading: state.productsReducer.loading
     }
 }
 
