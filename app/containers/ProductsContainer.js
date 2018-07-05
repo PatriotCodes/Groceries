@@ -22,24 +22,19 @@ class ProductsContainer extends Component {
     }
 
     render() {
-        if (this.props.loading) {
-            return (
-                <LoadingIndicator/>
-            );
-        } else {
-            return (
-                <View style={styles.container}>
-                    <FlatList
-                        data={this.props.products}
-                        renderItem={({item}) => (
-                            <Product title={item.title}/>
-                        )}
-                        keyExtractor={item => item.id.toString()}
-                        ItemSeparatorComponent={() => <View style={styles.itemSeparator}/>}
-                    />
-                </View>
-            )
-        }
+        return (
+            <View style={styles.container}>
+                {this.props.loading && <LoadingIndicator/>}
+                {!this.props.loading && <FlatList
+                    data={this.props.products}
+                    renderItem={({item}) => (
+                        <Product title={item.title}/>
+                    )}
+                    keyExtractor={item => item.id.toString()}
+                    ItemSeparatorComponent={() => <View style={styles.itemSeparator}/>}
+                />}
+            </View>
+        )
     }
 
 }
