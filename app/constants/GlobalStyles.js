@@ -13,7 +13,9 @@ const globalStyles = StyleSheet.create({
         shadowOpacity: 0,
         borderBottomColor: '#b2b2b2',
         borderBottomWidth: 1
-    }
+    },
 });
+
+export const highlightColor = '#bcbcbc';
 
 export default globalStyles;

@@ -3,7 +3,7 @@ import ProductsContainer from './ProductsContainer';
 import ProductsEditContainer from './ProductsEditContainer';
 import { Router, Scene, Actions } from 'react-native-router-flux';
 import {View, Text, TouchableHighlight, StyleSheet, Platform, Image} from 'react-native';
-import globalStyles from '../constants/GlobalStyles';
+import globalStyles, {highlightColor} from '../constants/GlobalStyles';
 
 class AppContainer extends Component {
 
@@ -28,7 +28,8 @@ class AppContainer extends Component {
 
     doneEditingButton() {
         return(
-            <TouchableHighlight onPress={() => Actions.products()}>
+            <TouchableHighlight underlayColor={highlightColor}
+                onPress={() => Actions.products()}>
                 <Text style={styles.navText}>Done</Text>
             </TouchableHighlight>
         )
@@ -36,7 +37,9 @@ class AppContainer extends Component {
 
     editButton() {
         return(
-            <TouchableHighlight onPress={() => Actions.editProducts()}>
+            <TouchableHighlight style={{height: Platform.OS === 'ios'? 64 : 54,}}
+                underlayColor={highlightColor}
+                onPress={() => Actions.editProducts()}>
                 <Image
                     style={styles.headerIcon}
                     source={require('../media/edit.png')}/>
@@ -63,7 +66,9 @@ styles = StyleSheet.create({
     headerIcon: {
         width: Platform.OS === 'ios'? 44 : 34,
         height: Platform.OS === 'ios'? 44 : 34,
-        marginRight: 10
+        marginRight: 10,
+        marginTop: 10,
+        paddingLeft: 10,
     }
 });
 

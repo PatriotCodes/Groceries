@@ -4,13 +4,16 @@ import {
     View,
     StyleSheet,
     FlatList,
-    Text, StatusBar, Platform
+    Text,
+    StatusBar,
+    Platform,
+    TouchableHighlight
 } from 'react-native';
 import ProductEdit from '../components/ProductEdit';
 import {bindActionCreators} from 'redux';
 import {ActionCreators} from "../actions";
 import {Actions} from 'react-native-router-flux';
-import globalStyles from '../constants/GlobalStyles';
+import globalStyles, {highlightColor} from '../constants/GlobalStyles';
 import LoadingIndicator from '../components/LoadingIndicator';
 
 class ProductsEditContainer extends Component {
@@ -27,11 +30,12 @@ class ProductsEditContainer extends Component {
             <View style={{flex: 1}}>
                 <View style={[globalStyles.navBarView,
                         {marginTop: (Platform.OS === 'ios') ? 20 : StatusBar.currentHeight,
-                        paddingTop: (Platform.OS === 'ios') ? 14 : StatusBar.currentHeight - 6,
                         flexDirection: "row"}]}>
                     <Text style={styles.navText}>+</Text>
                     <Text style={styles.headerText}>Groceries</Text>
-                    <Text style={styles.navText}>Done</Text>
+                    <TouchableHighlight underlayColor={highlightColor} onPress={() => Actions.pop()}>
+                        <Text style={styles.navText}>Done</Text>
+                    </TouchableHighlight>
                 </View>
                 {this.props.loading && <LoadingIndicator/>}
                 {!this.props.loading &&
@@ -66,9 +70,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         flex: 1,
         fontWeight: "bold",
+        paddingTop: (Platform.OS === 'ios') ? 14 : StatusBar.currentHeight - 6,
     },
     navText: {
         fontFamily: "Roboto",
+        paddingTop: (Platform.OS === 'ios') ? 14 : StatusBar.currentHeight - 6,
         fontSize: 15,
         fontWeight: "bold",
         paddingRight: 10,

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, View, TouchableHighlight} from 'react-native';
-import globalStyles from '../constants/GlobalStyles';
+import globalStyles, {highlightColor} from '../constants/GlobalStyles';
 import {removeProduct} from "../actions/products";
 import {connect} from "react-redux";
 
@@ -11,7 +11,8 @@ class ProductEdit extends Component {
             <View style={styles.editItemView}>
                 <View style={styles.removeBtnWrapper}>
                     <TouchableHighlight key={this.props.id}
-                                        underlayColor='#e82525' onPress={() => this.onPress(this.props.id)}
+                                        underlayColor={highlightColor}
+                                        onPress={() => this.onPress(this.props.id)}
                                         style={styles.removeBtn}>
                             <Text style={{textAlign: "center",
                                 color: "white", paddingTop: 3}}>—</Text>

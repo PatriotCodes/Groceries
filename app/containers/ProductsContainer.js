@@ -6,13 +6,14 @@ import {
     FlatList,
     Platform,
     AsyncStorage,
-    Text,
     Image,
+    TouchableHighlight,
 } from 'react-native';
 import Product from '../components/Product';
 import LoadingIndicator from '../components/LoadingIndicator';
 import {bindActionCreators} from 'redux';
 import {ActionCreators} from "../actions";
+import {highlightColor} from "../constants/GlobalStyles";
 
 
 class ProductsContainer extends Component {
