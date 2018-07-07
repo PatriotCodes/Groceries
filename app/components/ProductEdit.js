@@ -1,17 +1,20 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, View, TouchableHighlight} from 'react-native';
 import globalStyles from '../constants/GlobalStyles';
+import {removeProduct} from "../actions/products";
+import {connect} from "react-redux";
 
-class ProductContainer extends Component {
+class ProductEdit extends Component {
 
     render() {
         return (
             <View style={styles.editItemView}>
                 <View style={styles.removeBtnWrapper}>
                     <TouchableHighlight key={this.props.id}
-                                        underlayColor='#690000' onPress={() => this.onPress(this.props.id)}
+                                        underlayColor='#e82525' onPress={() => this.onPress(this.props.id)}
                                         style={styles.removeBtn}>
-                            <Text style={{textAlign: "center", color: "white"}}>-</Text>
+                            <Text style={{textAlign: "center",
+                                color: "white", paddingTop: 3}}>—</Text>
                     </TouchableHighlight>
                 </View>
                 <View style={styles.productTextViewStyle}>
@@ -22,7 +25,7 @@ class ProductContainer extends Component {
     }
 
     onPress = (id) => {
-        alert(id);
+        this.props.removeProduct(id);
     };
 
 }
@@ -42,14 +45,15 @@ const styles = StyleSheet.create({
         flex: 1,
         position: 'absolute',
         backgroundColor: "#990000",
-        height: 20,
-        width: 20,
-        borderRadius: 10,
+        height: 26,
+        width: 26,
+        borderRadius: 13,
     },
     editItemView: {
         flex: 1,
         flexDirection: "row",
+        backgroundColor: "#FFFFFF",
     }
 });
 
-export default ProductContainer;
+export default connect(null, {removeProduct})(ProductEdit);

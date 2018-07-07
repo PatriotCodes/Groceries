@@ -3,12 +3,15 @@ import {connect} from 'react-redux';
 import {
     View,
     StyleSheet,
-    FlatList
+    FlatList,
+    Text, StatusBar, Platform
 } from 'react-native';
 import ProductEdit from '../components/ProductEdit';
 import {bindActionCreators} from 'redux';
 import {ActionCreators} from "../actions";
 import {Actions} from 'react-native-router-flux';
+import globalStyles from '../constants/GlobalStyles';
+import LoadingIndicator from '../components/LoadingIndicator';
 
 class ProductsEditContainer extends Component {
 
@@ -22,6 +25,16 @@ class ProductsEditContainer extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
+                <View style={[globalStyles.navBarView,
+                        {marginTop: (Platform.OS === 'ios') ? 20 : StatusBar.currentHeight,
+                        paddingTop: (Platform.OS === 'ios') ? 14 : StatusBar.currentHeight - 6,
+                        flexDirection: "row"}]}>
+                    <Text style={styles.navText}>+</Text>
+                    <Text style={styles.headerText}>Groceries</Text>
+                    <Text style={styles.navText}>Done</Text>
+                </View>
+                {this.props.loading && <LoadingIndicator/>}
+                {!this.props.loading &&
                 <FlatList
                     data={this.props.products}
                     renderItem={({item}) => (
@@ -29,15 +42,14 @@ class ProductsEditContainer extends Component {
                     )}
                     keyExtractor={item => item.id.toString()}
                     ItemSeparatorComponent={() => <View style={styles.itemSeparator}/>}
-                />
+                />}
             </View>
         )
     }
 
     addNewProduct(title) {
-        Actions.refresh({
-            hideNavBar: false
-        });
+        this.props.addNewProduct(title);
+        Actions.products();
     }
 
 }
@@ -48,11 +60,27 @@ const styles = StyleSheet.create({
         width: "100%",
         backgroundColor: "white",
     },
+    headerText: {
+        fontFamily: "Roboto",
+        fontSize: 15,
+        textAlign: 'center',
+        flex: 1,
+        fontWeight: "bold",
+    },
+    navText: {
+        fontFamily: "Roboto",
+        fontSize: 15,
+        fontWeight: "bold",
+        paddingRight: 10,
+        paddingLeft: 10,
+        width: 60,
+    },
 });
 
 function mapStateToProps(state) {
     return {
         products: state.productsReducer.products,
+        loading: state.productsReducer.loading
     }
 }
 

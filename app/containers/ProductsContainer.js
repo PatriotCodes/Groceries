@@ -4,6 +4,10 @@ import {
     View,
     StyleSheet,
     FlatList,
+    Platform,
+    AsyncStorage,
+    Text,
+    Image,
 } from 'react-native';
 import Product from '../components/Product';
 import LoadingIndicator from '../components/LoadingIndicator';
@@ -19,6 +23,7 @@ class ProductsContainer extends Component {
     }
 
     componentDidMount() {
+    //     AsyncStorage.removeItem('data');
         this.props.getAllProducts();
     }
 
@@ -38,7 +43,14 @@ class ProductsContainer extends Component {
                             ItemSeparatorComponent={() => <View style={styles.itemSeparator}/>}
                         />
                     </View>
-                    <View style={styles.footer}/>
+                    <View style={styles.footer}>
+                        <Image
+                            style={styles.footerIcon}
+                            source={require('../media/list.png')}/>
+                        <Image
+                            style={styles.footerIcon}
+                            source={require('../media/cart.png')}/>
+                    </View>
                 </View>}
             </View>
         )
@@ -53,10 +65,24 @@ const styles = StyleSheet.create({
         backgroundColor: "#d5d5d6",
     },
     footer: {
-        flex: .1,
-        // TODO: change
-        backgroundColor: "#d5d5d6",
+        height: Platform.OS === 'ios'? 64 : 54,
+        backgroundColor: "#f8f9f9",
+        borderTopColor: '#b2b2b2',
+        borderTopWidth: 1,
+        flexDirection: "row",
+        justifyContent: 'space-between',
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
     },
+    footerIcon: {
+        resizeMode: 'contain',
+        width: Platform.OS === 'ios'? 44 : 34,
+        height: Platform.OS === 'ios'? 44 : 34,
+        marginTop: 10,
+        flex: 1
+    }
 });
 
 function mapStateToProps(state) {

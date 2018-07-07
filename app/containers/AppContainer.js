@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import ProductsContainer from './ProductsContainer';
 import ProductsEditContainer from './ProductsEditContainer';
 import { Router, Scene, Actions } from 'react-native-router-flux';
-import { View, Text, TouchableHighlight, StyleSheet } from 'react-native';
+import {View, Text, TouchableHighlight, StyleSheet, Platform, Image} from 'react-native';
+import globalStyles from '../constants/GlobalStyles';
 
 class AppContainer extends Component {
 
     render() {
         return (
-            <Router titleStyle={styles.navText} navigationBarStyle={styles.navBar}>
+            <Router titleStyle={styles.navText} navigationBarStyle={globalStyles.navBarView}>
                 <Scene key="root" titleStyle={styles.headerText}>
                     <Scene key="products" component={ProductsContainer}
                            title="Groceries"
@@ -18,8 +19,7 @@ class AppContainer extends Component {
                            onRight={() => Actions.editProducts()}
                            initial/>
                     <Scene key="editProducts" component={ProductsEditContainer}
-                           renderLeftButton={this.addNewButton()}
-                           renderRightButton={this.doneEditingButton()}
+                           hideNavBar={true}
                            title="Groceries"/>
                 </Scene>
             </Router>
@@ -37,15 +37,9 @@ class AppContainer extends Component {
     editButton() {
         return(
             <TouchableHighlight onPress={() => Actions.editProducts()}>
-                <Text style={styles.navText}>EDIT</Text>
-            </TouchableHighlight>
-        )
-    }
-
-    addNewButton() {
-        return(
-            <TouchableHighlight onPress={() => Actions.refresh({hideNavBar: true})}>
-                <Text style={styles.navText}>+</Text>
+                <Image
+                    style={styles.headerIcon}
+                    source={require('../media/edit.png')}/>
             </TouchableHighlight>
         )
     }
@@ -55,21 +49,21 @@ class AppContainer extends Component {
 styles = StyleSheet.create({
     headerText: {
         fontFamily: "Roboto",
-        fontSize: 14,
+        fontSize: 15,
         textAlign: 'center',
         flex: 1
     },
     navText: {
         fontFamily: "Roboto",
-        fontSize: 14,
+        fontSize: 15,
         fontWeight: "bold",
         paddingRight: 10,
         paddingLeft: 10,
     },
-    navBar: {
-        paddingTop: 0,
-        height: 44,
-        backgroundColor: "#d5d5d6",
+    headerIcon: {
+        width: Platform.OS === 'ios'? 44 : 34,
+        height: Platform.OS === 'ios'? 44 : 34,
+        marginRight: 10
     }
 });
 
