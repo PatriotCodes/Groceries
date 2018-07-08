@@ -46,6 +46,7 @@ export function addNewProduct(product){
                 products = JSON.parse(products);
                 const newId = products[products.length - 1].id++;
                 products.unshift({"id": newId, "title": product.toString()});
+                dispatch({type: LOADING});
                 AsyncStorage.setItem('data', JSON.stringify(products), () => {
                     dispatch({type: ADD_NEW_PRODUCT, products: products});
                 });

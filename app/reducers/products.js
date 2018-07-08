@@ -17,7 +17,7 @@ export default productsReducer = (state = initialState, action) => {
             return state;
         }
         case ADD_NEW_PRODUCT: {
-            state = Object.assign({}, state, { products: action.products });
+            state = Object.assign({}, state, { products: action.products, loading: false });
             return state;
         }
         default:

@@ -49,7 +49,7 @@ class AppContainer extends Component {
 
 }
 
-styles = StyleSheet.create({
+const styles = StyleSheet.create({
     headerText: {
         fontFamily: "Roboto",
         fontSize: 15,

@@ -20,7 +20,9 @@ class ProductsContainer extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            display: "home",
+        };
     }
 
     componentDidMount() {
