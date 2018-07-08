@@ -5,7 +5,6 @@ import {
     StyleSheet,
     FlatList,
     Platform,
-    AsyncStorage,
     Image,
     TouchableHighlight,
 } from 'react-native';
@@ -14,19 +13,19 @@ import LoadingIndicator from '../components/LoadingIndicator';
 import {bindActionCreators} from 'redux';
 import {ActionCreators} from "../actions";
 import {highlightColor} from "../constants/GlobalStyles";
-
+import {SwipeRow} from 'react-native-swipe-list-view';
 
 class ProductsContainer extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            display: "home",
+            displayCart: false,
         };
     }
 
     componentDidMount() {
-    //     AsyncStorage.removeItem('data');
+        //AsyncStorage.removeItem('data');
         this.props.getAllProducts();
     }
 
@@ -39,20 +38,57 @@ class ProductsContainer extends Component {
                     <View style={{flex: .9}}>
                         <FlatList
                             data={this.props.products}
-                            renderItem={({item}) => (
-                                <Product title={item.title}/>
+                            renderItem={(data) => (
+                                <SwipeRow
+                                    disableLeftSwipe={true}
+                                    closeOnScroll={false}
+                                    leftOpenValue={75}
+                                    onRowOpen={(rowKey, rowMap) => {
+                                        this.props.addToCart(data.item.id);
+                                    }}
+                                    onRowClose={(rowKey, rowMap) => {
+                                        this.props.removeFromCart(data.item.id);
+                                    }}>
+                                    <View style={{flex: 1, flexDirection: "row"}}>
+                                        <View style={{alignItems: "center", justifyContent: "center", flex: 1}}>
+                                            <Image style={{width: 30, height: 30}}
+                                                   source={require('../media/cart-inactive.png')}/>
+                                        </View>
+                                        <View style={{flex: 3.2}}></View>
+                                    </View>
+                                    <View>
+                                        {(!this.state.displayCart || this.props.cart.includes(data.item.id))
+                                        && <Product title={data.item.title} id={data.item.id}/>}
+                                    </View>
+                                </SwipeRow>
                             )}
                             keyExtractor={item => item.id.toString()}
                             ItemSeparatorComponent={() => <View style={styles.itemSeparator}/>}
                         />
                     </View>
                     <View style={styles.footer}>
-                        <Image
-                            style={styles.footerIcon}
-                            source={require('../media/list.png')}/>
-                        <Image
-                            style={styles.footerIcon}
-                            source={require('../media/cart.png')}/>
+                        <TouchableHighlight style={styles.footerBtn}
+                                            onPress={() => this.setState({displayCart: false})}
+                                            underlayColor={highlightColor}>
+                            {!this.state.displayCart ? <Image
+                                    style={styles.footerIcon}
+                                    source={require('../media/list.png')}/> :
+                                <Image
+                                    style={styles.footerIcon}
+                                    source={require('../media/list-inactive.png')}/>
+                            }
+                        </TouchableHighlight>
+                        <TouchableHighlight style={styles.footerBtn}
+                                            onPress={() => this.setState({displayCart: true})}
+                                            underlayColor={highlightColor}>
+                            {this.state.displayCart ? <Image
+                                    style={styles.footerIcon}
+                                    source={require('../media/cart-active.png')}/> :
+                                <Image
+                                    style={styles.footerIcon}
+                                    source={require('../media/cart-inactive.png')}/>
+                            }
+                        </TouchableHighlight>
                     </View>
                 </View>}
             </View>
@@ -68,12 +104,11 @@ const styles = StyleSheet.create({
         backgroundColor: "#d5d5d6",
     },
     footer: {
-        height: Platform.OS === 'ios'? 64 : 54,
+        height: Platform.OS === 'ios' ? 64 : 54,
         backgroundColor: "#f8f9f9",
         borderTopColor: '#b2b2b2',
         borderTopWidth: 1,
         flexDirection: "row",
-        justifyContent: 'space-between',
         position: 'absolute',
         left: 0,
         right: 0,
@@ -81,21 +116,25 @@ const styles = StyleSheet.create({
     },
     footerIcon: {
         resizeMode: 'contain',
-        width: Platform.OS === 'ios'? 44 : 34,
-        height: Platform.OS === 'ios'? 44 : 34,
-        marginTop: 10,
-        flex: 1
+        width: Platform.OS === 'ios' ? 44 : 34,
+        height: Platform.OS === 'ios' ? 44 : 34,
+    },
+    footerBtn: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
     }
 });
 
 function mapStateToProps(state) {
     return {
         products: state.productsReducer.products,
-        loading: state.productsReducer.loading
+        loading: state.productsReducer.loading,
+        cart: state.cartReducer.addedIDs
     }
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
     return bindActionCreators(ActionCreators, dispatch);
 }
 

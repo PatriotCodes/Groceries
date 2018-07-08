@@ -5,13 +5,15 @@ let initialState = { addedIDs: [] };
 export default cartReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_TO_CART: {
-            return {
-                ...state,
-                addedIDs: [...state.addedIDs, action.productId]
-            }
+            const nextState = JSON.parse(JSON.stringify(state));
+            nextState.addedIDs.push(action.productID);
+            return nextState;
         }
         case REMOVE_PRODUCT_FROM_CART: {
-            return state;
+            const nextState = JSON.parse(JSON.stringify(state));
+            const index = nextState.addedIDs.indexOf(action.productID);
+            nextState.addedIDs.splice(index,1);
+            return nextState;
         }
         default:
             return state;

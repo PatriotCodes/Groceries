@@ -22,7 +22,6 @@ class AddNewProduct extends Component {
         };
     }
 
-
     componentWillReceiveProps(nextProps) {
         if (nextProps.modalVisible !== this.props.modalVisible) {
             this.setState({visible: nextProps.modalVisible});
@@ -55,7 +54,7 @@ class AddNewProduct extends Component {
                         <Text style={styles.mainText}>Add new list item</Text>
                     </View>
                     <View style={{flex: 3, alignItems: "center"}}>
-                        <TextInput style={[styles.mainText, {width: "90%"}]}
+                        <TextInput style={[styles.mainText, {width: "90%", paddingBottom: 4}]}
                                    onChangeText={(text) => this.onTextChange(text)}
                                    maxLength={27}
                                    value={this.state.text}/>
@@ -73,8 +72,12 @@ class AddNewProduct extends Component {
     }
 
     onPressDone() {
-        this.props.addNew(this.state.text);
-        this.props.closeModal();
+        if (!(this.state.text.trim().length === 0)) {
+            this.props.addNew(this.state.text);
+            this.props.closeModal();
+        } else {
+            alert("Please enter a valid name")
+        }
     }
 
 }
